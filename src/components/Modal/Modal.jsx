@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = props => {
+const Modal = ({ image }) => {
   return (
     <div className="Overlay">
       <div className="Modal">
