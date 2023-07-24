@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Modal = ({ image }) => {
+const Modal = ({ src, onClick }) => {
   return (
-    <div className="Overlay">
+    <div className="Overlay" onClick={() => onClick('')}>
       <div className="Modal">
-        <img src="" alt="" />
+        <img src={src} alt="" />
       </div>
     </div>
   );

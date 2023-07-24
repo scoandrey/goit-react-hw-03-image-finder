@@ -1,5 +1,9 @@
-const Button = props => {
-  return <button className="Button">Load more</button>;
+const Button = ({ onClick }) => {
+  return (
+    <button className="Button" onClick={onClick}>
+      Load more
+    </button>
+  );
 };
 
 export default Button;
