@@ -34,11 +34,9 @@ class App extends React.Component {
     }
   };
 
-  setQ = q => this.setState({ q });
+  setQ = q => this.setState({ q, page: 1, images: [] });
 
-  clearImages = () => {
-    this.setState({ images: [] });
-  };
+
 
   async componentDidMount() {
     await this.getData();
@@ -50,7 +48,6 @@ class App extends React.Component {
         <Searchbar
           onSubmit={this.getData}
           setQ={this.setQ}
-          clearImages={this.clearImages}
         />
         <ImageGallery images={this.state.images} />
         {this.state.isLoading ? <Audio /> : <Button onClick={this.getData} />}
