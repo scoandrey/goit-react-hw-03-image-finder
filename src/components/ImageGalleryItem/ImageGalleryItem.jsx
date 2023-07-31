@@ -13,5 +13,3 @@ const ImageGalleryItem = ({ image, onClick }) => {
 };
 
 export default ImageGalleryItem;
-
-// largeImageURL

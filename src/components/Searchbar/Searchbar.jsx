@@ -5,10 +5,9 @@ class Searchbar extends React.Component {
     value: '',
   };
 
-  handleSubmit = async e => {
+  handleSubmit = e => {
     e.preventDefault();
-    this.props.setQ(this.state.value);
-    await this.props.onSubmit();
+    this.props.onSubmit(this.state.value);
   };
 
   render() {
