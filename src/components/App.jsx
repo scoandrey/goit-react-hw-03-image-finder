@@ -11,37 +11,30 @@ class App extends React.Component {
     images: [],
     page: 1,
     q: '',
+    showLoadMoreButton: false,
   };
 
-  onSubmit = q => this.setState({ q, page: 1, images: [] });
-
-  incPage = () => this.setState(prevState => ({ page: prevState.page + 1 }));
-
   async componentDidUpdate(prevProps, prevState) {
-    if (prevState.q !== this.state.q) {
+    if (prevState.q !== this.state.q || prevState.page !== this.state.page) {
       this.setState({ isLoading: true });
       try {
-        this.setState({ images: await getImage(1, this.state.q) });
-      } catch (error) {
-      } finally {
-        this.setState({ isLoading: false, page: 1 });
-      }
-    }
-    if (prevState.page !== this.state.page && this.state.page !== 1) {
-      this.setState({ isLoading: true });
-      try {
-        this.setState({
-          images: [
-            ...this.state.images,
-            ...(await getImage(this.state.page, this.state.q)),
-          ],
-        });
+        const data = await getImage(this.state.page, this.state.q);
+
+        this.state.page < Math.ceil(data.totalHits / 12)
+          ? this.setState({ showLoadMoreButton: true })
+          : this.setState({ showLoadMoreButton: false });
+
+        this.setState({ images: [...this.state.images, ...data.hits] });
       } catch (error) {
       } finally {
         this.setState({ isLoading: false });
       }
     }
   }
+
+  onSubmit = q => this.setState({ q, page: 1, images: [] });
+
+  incPage = () => this.setState(prevState => ({ page: prevState.page + 1 }));
 
   render() {
     return (
@@ -50,9 +43,9 @@ class App extends React.Component {
         <ImageGallery images={this.state.images} />
         {this.state.isLoading ? (
           <Audio />
-        ) : (
-          <Button onClick={this.incPage} disabled={!this.state.images.length} />
-        )}
+        ) : this.state.showLoadMoreButton ? (
+          <Button onClick={this.incPage} />
+        ) : null}
       </div>
     );
   }

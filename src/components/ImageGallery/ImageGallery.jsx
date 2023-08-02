@@ -25,7 +25,7 @@ class ImageGallery extends React.Component {
             );
           })}
         </ul>
-        {this.state.src && <Modal src={this.state.src} onClick={this.setSrc}/>}
+        {this.state.src && <Modal src={this.state.src} onClick={this.setSrc} />}
       </>
     );
   }
