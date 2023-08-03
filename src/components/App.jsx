@@ -1,7 +1,6 @@
 import Button from './Button/Button';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Searchbar from './Searchbar/Searchbar';
-import { Audio } from 'react-loader-spinner';
 import React from 'react';
 import { getImage } from './api';
 
@@ -20,11 +19,10 @@ class App extends React.Component {
       try {
         const data = await getImage(this.state.page, this.state.q);
 
-        this.state.page < Math.ceil(data.totalHits / 12)
-          ? this.setState({ showLoadMoreButton: true })
-          : this.setState({ showLoadMoreButton: false });
-
-        this.setState({ images: [...this.state.images, ...data.hits] });
+        this.setState(prevState => ({
+          images: [...prevState.images, ...data.hits],
+          showLoadMoreButton: prevState.page < Math.ceil(data.totalHits / 12),
+        }));
       } catch (error) {
       } finally {
         this.setState({ isLoading: false });
@@ -41,11 +39,9 @@ class App extends React.Component {
       <div className="App">
         <Searchbar onSubmit={this.onSubmit} />
         <ImageGallery images={this.state.images} />
-        {this.state.isLoading ? (
-          <Audio />
-        ) : this.state.showLoadMoreButton ? (
-          <Button onClick={this.incPage} />
-        ) : null}
+        {this.state.showLoadMoreButton && (
+          <Button onClick={this.incPage} loading={this.isLoading} />
+        )}
       </div>
     );
   }
